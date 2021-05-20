@@ -9,7 +9,7 @@ var playerMoney = 10;
 console.log(playerName, playerAttack, playerHealth);
 
 var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
-var enemyHealth = 50;
+var enemyHealth = Math.floor(Math.random() * 21) + 40;
 var enemyAttack = 12;
 
 // fight function
@@ -27,14 +27,16 @@ var fight = function(enemyName) {
       if (confirmSkip) {
         window.alert(playerName + ' has decided to skip this fight. Goodbye!');
         // subtract money from playerMoney for skipping
-        playerMoney = playerMoney - 10;
+        playerMoney = Math.max(0, playerMoney - 10);
         console.log("playerMoney", playerMoney)
         break;
       }
     }
     else if (promptFight === "fight" || promptFight === "FIGHT") {
     // remove enemy's health by subtracting the amount set in the playerAttack variable
-    enemyHealth = enemyHealth - playerAttack;
+    var damage = randomNumber(playerAttack - 3, playerAttack);
+    
+    enemyHealth = Math.max(0, enemyHealth - damage);
     console.log(
       playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
     );
@@ -53,7 +55,7 @@ var fight = function(enemyName) {
     }
 
     // remove players's health by subtracting the amount set in the enemyAttack variable
-    playerHealth = playerHealth - enemyAttack;
+    playerHealth = Math.max(0, playerHealth - enemyAttack);
     console.log(
       enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
     );
@@ -89,7 +91,7 @@ for (var i = 0; i < enemyNames.length; i++) {
     break;
   }
   var pickedEnemyName = enemyNames[i];
-  enemyHealth = 50;
+  enemyHealth = randomNumber(40, 60)
   fight(pickedEnemyName);
   // if we are not at the last enemy in the array
   if (playerHealth > 0 && i < enemyNames.length - 1) {
@@ -161,6 +163,12 @@ var shop = function() {
         shop();
         break;
   }
+};
+
+var randomNumber = function(min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  return value;
 };
 
 // start the game when the page loads
